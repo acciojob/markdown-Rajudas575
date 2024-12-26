@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import './../styles/App.css';
 
 const App = () => {
-  // useState hook to keep track of the markdown text
   const [texttype, setTextType] = useState("");
   const [htmlPreview, setHtmlPreview] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -11,13 +10,13 @@ const App = () => {
     const timer = setTimeout(() => {
       setIsLoading(false);
       setHtmlPreview(texttype);
-      // setHtmlPreview(convertMarkdownToHtml(markdown));
     }, 500);
 
     return () => clearTimeout(timer);
   }, [texttype]);
 
 return (
+  <>
     <div className="app">
       <div className="container">
         <div className="textarea-section">
@@ -44,6 +43,7 @@ return (
         </div>
       </div>
     </div>
+  </>
   );
 };
 
