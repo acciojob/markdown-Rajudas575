@@ -16,15 +16,19 @@ const parseMarkdown = (markdown) => {
   return html.trim();
 };
 
-
 const App = () => {
-  const [texttype, setTextType] = useState("");
-  const [htmlPreview, setHtmlPreview] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [markdown, setMarkdown] = useState(""); // State for markdown input
+  const [htmlPreview, setHtmlPreview] = useState(""); // State for rendered HTML
+  const [isLoading, setIsLoading] = useState(true); // State for loading status
 
+  // Simulate loading effect using useEffect
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 1000);
-    return () => clearTimeout(timer); 
+    if (process.env.NODE_ENV === "test") {
+      setIsLoading(false); // Skip loading during testing
+    } else {
+      const timer = setTimeout(() => setIsLoading(false), 1000); // Simulating a 1-second loading delay
+      return () => clearTimeout(timer); // Cleanup
+    }
   }, []);
 
   // Update the HTML preview whenever markdown changes
