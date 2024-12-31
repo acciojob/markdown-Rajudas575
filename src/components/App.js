@@ -10,7 +10,7 @@ const App = () => {
     const timer = setTimeout(() => {
       setIsLoading(false);
       setHtmlPreview(texttype);
-    }, 10000);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, [texttype]);
