@@ -1,49 +1,55 @@
 import React, { useState, useEffect } from "react";
 import './../styles/App.css';
 
+
+const parseMarkdown = (markdown) => {
+  let html = markdown
+    .replace(/^# (.*$)/gim, "<h1>$1</h1>") // H1
+    .replace(/^## (.*$)/gim, "<h2>$1</h2>") // H2
+    .replace(/^### (.*$)/gim, "<h3>$1</h3>") // H3
+    .replace(/\*\*(.*)\*\*/gim, "<b>$1</b>") // Bold
+    .replace(/\*(.*)\*/gim, "<i>$1</i>") // Italic
+    .replace(/!\[(.*?)\]\((.*?)\)/gim, '<img alt="$1" src="$2" />') // Images
+    .replace(/\[(.*?)\]\((.*?)\)/gim, '<a href="$2">$1</a>') // Links
+    .replace(/\n$/gim, "<br>"); // Line breaks
+
+  return html.trim();
+};
+
+
 const App = () => {
   const [texttype, setTextType] = useState("");
   const [htmlPreview, setHtmlPreview] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-      setHtmlPreview(texttype);
-    }, 1000);
+    const timer = setTimeout(() => setIsLoading(false), 1000);
+    return () => clearTimeout(timer); 
+  }, []);
 
-    return () => clearTimeout(timer);
-  }, [texttype]);
+  // Update the HTML preview whenever markdown changes
+  useEffect(() => {
+    const parsedHtml = parseMarkdown(markdown);
+    setHtmlPreview(parsedHtml);
+  }, [markdown]);
 
-return (
-  <>
+  if (isLoading) {
+    return <div className="loading">Loading...</div>;
+  }
+
+  return (
     <div className="app">
-      <div className="container">
-        <div className="textarea-section">
-          <textarea
-            className="textarea"
-            placeholder="Write your markdown here..."
-            value={texttype}
-            onChange={(e) => {
-              setIsLoading(true);
-              setTextType(e.target.value);
-            }}
-          />
-        </div>
-
-        <div className="preview-section">
-          {isLoading ? (
-            <div className="loading">Loading...</div>
-          ) : (
-            <div
-              className="preview"
-              dangerouslySetInnerHTML={{ __html: htmlPreview }}
-            />
-          )}
-        </div>
-      </div>
+      <textarea
+        className="textarea"
+        placeholder="Write your markdown here..."
+        value={markdown}
+        onChange={(e) => setMarkdown(e.target.value)}
+      ></textarea>
+      <div
+        className="preview"
+        dangerouslySetInnerHTML={{ __html: htmlPreview }}
+      ></div>
     </div>
-  </>
   );
 };
 
