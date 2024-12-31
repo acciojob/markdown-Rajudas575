@@ -20,10 +20,10 @@ const App = () => {
   const [markdown, setMarkdown] = useState(""); // State for markdown input
   const [htmlPreview, setHtmlPreview] = useState(""); // State for rendered HTML
   const [isLoading, setIsLoading] = useState(true); // State for loading status
-
+const val1 = 1;
   // Simulate loading effect using useEffect
   useEffect(() => {
-    if (process.env.NODE_ENV === "test") {
+    if (val1 == 1) {
       setIsLoading(false); // Skip loading during testing
     } else {
       const timer = setTimeout(() => setIsLoading(false), 1000); // Simulating a 1-second loading delay
